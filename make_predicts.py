@@ -31,10 +31,17 @@ def preprocess_part2_for_second_model(df):
     return df
 
 
-def predict(X):
+def predict(X, model='all'):
     clf = load_models()
     X = preprocess(X)
-    y = {'more_precision': clf[0].predict(X)}
-    X2 = preprocess_part2_for_second_model(X)
-    y['more_recall'] = clf[1].predict(X2)
+    y = None
+    if model == 'all':
+        y = {'precision': clf[0].predict(X)}
+        X2 = preprocess_part2_for_second_model(X)
+        y['recall'] = clf[1].predict(X2)
+    elif model == 'precision':
+        y = clf[0].predict(X)
+    elif model == 'recall':
+        X2 = preprocess_part2_for_second_model(X)
+        y = clf[1].predict(X2)
     return y
